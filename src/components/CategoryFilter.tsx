@@ -8,6 +8,7 @@ interface CategoryFilterProps {
 const CategoryFilter = ({ selected, onSelect }: CategoryFilterProps) => {
   return (
     <div className="flex flex-wrap gap-2">
+      {/* زر اختيار كل التصنيفات */}
       <button
         onClick={() => onSelect("All")}
         className={`px-4 py-2 rounded-lg font-display text-xs tracking-wider uppercase transition-all duration-300 ${
@@ -18,6 +19,8 @@ const CategoryFilter = ({ selected, onSelect }: CategoryFilterProps) => {
       >
         All
       </button>
+
+      {/* أزرار كل التصنيفات الجديدة */}
       {categories.map((cat) => (
         <button
           key={cat}
