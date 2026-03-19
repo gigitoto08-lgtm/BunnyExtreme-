@@ -1,13 +1,10 @@
 import { useState, useMemo } from "react";
 import Navbar from "@/components/Navbar";
-import HeroSection from "@/components/HeroSection";
 import VideoCard from "@/components/VideoCard";
-import VideoPlayer from "@/components/VideoPlayer";
 import CategoryFilter from "@/components/CategoryFilter";
 import SearchBar from "@/components/SearchBar";
 import Footer from "@/components/Footer";
 import {
-  Video,
   videos,
   getTrendingVideos,
   getLatestVideos,
@@ -25,7 +22,6 @@ const SectionHeading = ({ icon: Icon, title, accent, id }: any) => (
 );
 
 const Index = () => {
-  const [selectedVideo, setSelectedVideo] = useState<Video | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
 
@@ -55,7 +51,7 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
 
-      {/* HERO (تم تبسيطه) */}
+      {/* HERO */}
       <div className="text-center py-10 px-4">
         <h1 className="text-3xl md:text-4xl font-bold mb-3 text-primary">
           Unlimited Video Library
@@ -76,7 +72,7 @@ const Index = () => {
         />
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {trending.map((v) => (
-            <VideoCard key={v.id} video={v} onSelect={setSelectedVideo} />
+            <VideoCard key={v.id} video={v} />
           ))}
         </div>
       </section>
@@ -105,7 +101,7 @@ const Index = () => {
         />
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {latest.map((v) => (
-            <VideoCard key={v.id} video={v} onSelect={setSelectedVideo} />
+            <VideoCard key={v.id} video={v} />
           ))}
         </div>
       </section>
@@ -130,21 +126,13 @@ const Index = () => {
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {filteredVideos.map((v) => (
-              <VideoCard key={v.id} video={v} onSelect={setSelectedVideo} />
+              <VideoCard key={v.id} video={v} />
             ))}
           </div>
         )}
       </section>
 
       <Footer />
-
-      {/* Video Player Popup */}
-      {selectedVideo && (
-        <VideoPlayer
-          video={selectedVideo}
-          onClose={() => setSelectedVideo(null)}
-        />
-      )}
     </div>
   );
 };
