@@ -3,39 +3,50 @@ import { Video, formatViews } from "@/lib/data";
 
 interface VideoCardProps {
   video: Video;
-  onSelect: (video: Video) => void;
 }
 
-const VideoCard = ({ video, onSelect }: VideoCardProps) => {
+const VideoCard = ({ video }: VideoCardProps) => {
   return (
-    <button
-      onClick={() => onSelect(video)}
-      className="group card-3d rounded-lg overflow-hidden bg-card border border-border/50 text-left w-full transition-colors hover:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/50"
+    <a
+      href={`/video/${video.id}`}
+      className="group block rounded-lg overflow-hidden bg-card border border-border/50 w-full transition-all hover:border-primary/40 hover:scale-[1.02]"
     >
       <div className="relative aspect-video overflow-hidden">
         <img
           src={video.thumbnail}
           alt={video.title}
+          onError={(e) =>
+            (e.currentTarget.src =
+              "https://via.placeholder.com/600x340.png?text=Video")
+          }
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
           loading="lazy"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-          <div className="w-14 h-14 rounded-full bg-primary/90 flex items-center justify-center shadow-lg">
-            <Play className="w-6 h-6 text-primary-foreground ml-1" />
+
+        {/* زر التشغيل */}
+        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+          <div className="w-14 h-14 rounded-full bg-primary flex items-center justify-center shadow-lg">
+            <Play className="w-6 h-6 text-white ml-1" />
           </div>
         </div>
-        <span className="absolute top-2 right-2 px-2 py-0.5 text-xs font-display rounded bg-primary/80 text-primary-foreground tracking-wider uppercase">
+
+        {/* التصنيف */}
+        <span className="absolute top-2 right-2 px-2 py-1 text-[10px] rounded bg-primary text-white uppercase">
           {video.category}
         </span>
       </div>
-      <div className="p-4">
-        <h3 className="font-display text-sm font-bold text-foreground line-clamp-2 mb-2 group-hover:text-primary transition-colors">
+
+      {/* المعلومات */}
+      <div className="p-3">
+        <h3 className="text-sm font-bold text-foreground line-clamp-2 mb-1 group-hover:text-primary">
           {video.title}
         </h3>
-        <p className="text-xs text-muted-foreground line-clamp-2 mb-3 font-body">
+
+        <p className="text-xs text-muted-foreground line-clamp-2 mb-2">
           {video.description}
         </p>
-        <div className="flex items-center gap-3 text-xs text-muted-foreground font-body">
+
+        <div className="flex items-center justify-between text-xs text-muted-foreground">
           <span className="flex items-center gap-1">
             <Eye className="w-3 h-3" />
             {formatViews(video.views)}
@@ -43,7 +54,7 @@ const VideoCard = ({ video, onSelect }: VideoCardProps) => {
           <span>{video.uploadDate}</span>
         </div>
       </div>
-    </button>
+    </a>
   );
 };
 
