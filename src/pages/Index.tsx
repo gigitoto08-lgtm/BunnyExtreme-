@@ -52,14 +52,20 @@ const Index = () => {
       <Navbar />
 
       {/* HERO Section Neon 3D */}
-      <div className="text-center py-16 px-4 bg-gradient-to-r from-cyan-800 via-purple-900 to-pink-800 relative overflow-hidden">
-        <h1 className="text-4xl md:text-5xl font-extrabold text-white drop-shadow-neon mb-4 animate-neon-glow">
-          Unlimited Video Library
+      <div className="text-center py-16 px-4 bg-gradient-to-r from-cyan-800 via-purple-900 to-pink-800 relative overflow-hidden rounded-b-3xl">
+        <h1 className="text-5xl md:text-6xl font-extrabold text-white drop-shadow-neon mb-4 animate-neon-glow">
+          BunnyExtreme
         </h1>
-        <p className="text-gray-300 max-w-2xl mx-auto drop-shadow-neon">
-          Explore trending, latest, and categorized videos. Fast streaming,
-          simple browsing, and easy discovery. Neon vibes & 3D effects included!
+        <p className="text-gray-300 max-w-2xl mx-auto drop-shadow-neon mb-6 text-lg md:text-xl">
+          شاهد آلاف الفيديوهات الإباحية المتطرفة الحصرية الطويلة المفضلة لك مجانية بجودة 1080p مباشرة. تصفح التصنيفات المفضلة: POV، Anal، Threesome، Swallow، Extreme Deepthroat، Facefuck، Group Sex، BBC، Dredd Onlyfans، Leaked.
         </p>
+
+        {/* Search Bar */}
+        <div className="max-w-xl mx-auto">
+          <SearchBar query={searchQuery} onChange={setSearchQuery} />
+        </div>
+
+        {/* Neon background blobs */}
         <div className="absolute -top-20 -left-32 w-72 h-72 bg-pink-500 opacity-20 rounded-full blur-3xl animate-pulse-slow"></div>
         <div className="absolute -bottom-32 -right-24 w-96 h-96 bg-cyan-500 opacity-20 rounded-full blur-3xl animate-pulse-slow"></div>
       </div>
@@ -116,12 +122,9 @@ const Index = () => {
           accent="Videos"
           id="all-videos"
         />
-        <div className="mb-6">
-          <SearchBar query={searchQuery} onChange={setSearchQuery} />
-        </div>
         {filteredVideos.length === 0 ? (
           <p className="text-center text-gray-400 py-10 drop-shadow-neon">
-            No results found
+            لا توجد نتائج مطابقة
           </p>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
