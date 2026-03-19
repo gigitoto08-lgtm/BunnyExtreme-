@@ -7,7 +7,7 @@ import CategoryFilter from "@/components/CategoryFilter";
 import SearchBar from "@/components/SearchBar";
 import HowToSection from "@/components/HowToSection";
 import Footer from "@/components/Footer";
-import { Video, videos, getTrendingVideos, getLatestVideos, getVideosByCategory } from "@/lib/data";
+import { Video, videos, getTrendingVideos, getLatestVideos, searchVideos, getVideosByCategory } from "@/lib/data";
 import { TrendingUp, Clock, Grid3X3, Film } from "lucide-react";
 
 const SectionHeading = ({ icon: Icon, title, accent, id }: { icon: React.ElementType; title: string; accent: string; id: string }) => (
@@ -27,20 +27,16 @@ const Index = () => {
   const trending = useMemo(() => getTrendingVideos(8), []);
   const latest = useMemo(() => getLatestVideos(8), []);
 
-  // فلترة الفيديوهات حسب التصنيف أولًا ثم البحث
   const filteredVideos = useMemo(() => {
     let result = selectedCategory === "All" ? videos : getVideosByCategory(selectedCategory);
-
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
-      result = result.filter(
-        (v) =>
-          v.title.toLowerCase().includes(q) ||
-          v.description.toLowerCase().includes(q) ||
-          v.tags.some((t) => t.toLowerCase().includes(q))
+      result = result.filter((v) =>
+        v.title.toLowerCase().includes(q) ||
+        v.description.toLowerCase().includes(q) ||
+        v.tags.some((t) => t.toLowerCase().includes(q))
       );
     }
-
     return result;
   }, [searchQuery, selectedCategory]);
 
