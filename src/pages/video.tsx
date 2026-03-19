@@ -1,7 +1,5 @@
 import { useParams } from "react-router-dom";
 import { videos } from "@/lib/data";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 
 const VideoPage = () => {
   const { id } = useParams();
@@ -10,42 +8,56 @@ const VideoPage = () => {
 
   if (!video) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-white">
+      <div className="text-center py-20 text-red-500">
         Video not found
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <Navbar />
+    <div className="min-h-screen bg-background text-foreground px-4 py-10">
+      <div className="max-w-5xl mx-auto">
 
-      <div className="max-w-5xl mx-auto px-4 py-10">
-        {/* الفيديو */}
-        <div
-          className="w-full aspect-video mb-6"
-          dangerouslySetInnerHTML={{ __html: video.embedCode }}
-        />
+        {/* Player */}
+        <div className="aspect-video w-full mb-6 rounded-lg overflow-hidden border border-border">
+          <div
+            className="w-full h-full"
+            dangerouslySetInnerHTML={{ __html: video.embedCode }}
+          />
+        </div>
 
-        {/* العنوان */}
-        <h1 className="text-2xl md:text-3xl font-bold mb-3 text-primary">
+        {/* Title */}
+        <h1 className="text-2xl md:text-3xl font-bold mb-3">
           {video.title}
         </h1>
 
-        {/* الوصف */}
-        <p className="text-muted-foreground mb-6">
+        {/* Meta */}
+        <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
+          <span>{video.views} views</span>
+          <span>{video.uploadDate}</span>
+          <span className="bg-primary px-2 py-1 rounded text-white text-xs">
+            {video.category}
+          </span>
+        </div>
+
+        {/* Description */}
+        <p className="text-muted-foreground leading-relaxed mb-6">
           {video.description}
         </p>
 
-        {/* معلومات */}
-        <div className="text-sm text-muted-foreground flex gap-4">
-          <span>Views: {video.views}</span>
-          <span>Date: {video.uploadDate}</span>
-          <span>Category: {video.category}</span>
+        {/* Tags */}
+        <div className="flex flex-wrap gap-2">
+          {video.tags.map((tag) => (
+            <span
+              key={tag}
+              className="text-xs px-3 py-1 bg-secondary rounded"
+            >
+              #{tag}
+            </span>
+          ))}
         </div>
-      </div>
 
-      <Footer />
+      </div>
     </div>
   );
 };
