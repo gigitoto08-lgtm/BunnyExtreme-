@@ -52,15 +52,15 @@ const Index = () => {
       <Navbar />
 
       {/* HERO Section Neon 3D */}
-      <div className="relative overflow-hidden rounded-b-3xl bg-gradient-to-r from-cyan-800 via-purple-900 to-pink-800 py-16 px-4 text-center">
-        {/* عنوان الموقع Neon 3D */}
+      <div className="text-center py-16 px-4 bg-gradient-to-r from-cyan-800 via-purple-900 to-pink-800 relative overflow-hidden rounded-b-3xl">
+        {/* Site Title */}
         <h1 className="text-5xl md:text-6xl font-extrabold text-white drop-shadow-neon mb-4 animate-neon-glow">
           BunnyExtreme
         </h1>
 
-        {/* وصف الموقع مع glow */}
+        {/* Site Description */}
         <p className="text-gray-300 max-w-2xl mx-auto drop-shadow-neon mb-6 text-lg md:text-xl">
-          شاهد آلاف الفيديوهات الإباحية المتطرفة الحصرية الطويلة المفضلة لك مجانية بجودة 1080p مباشرة. تصفح التصنيفات المفضلة: POV، Anal، Threesome، Swallow، Extreme Deepthroat، Facefuck، Group Sex، BBC، Dredd Onlyfans، Leaked.
+          BunnyExtreme – Watch thousands of exclusive long adult videos in 1080p for free. Browse your favorite categories: POV, Anal, Threesome, Swallow, Extreme Deepthroat, Facefuck, Group Sex, BBC, Dredd Onlyfans, Leaked.
         </p>
 
         {/* Search Bar */}
@@ -71,10 +71,9 @@ const Index = () => {
         {/* Neon background blobs */}
         <div className="absolute -top-20 -left-32 w-72 h-72 bg-pink-500 opacity-20 rounded-full blur-3xl animate-pulse-slow"></div>
         <div className="absolute -bottom-32 -right-24 w-96 h-96 bg-cyan-500 opacity-20 rounded-full blur-3xl animate-pulse-slow"></div>
-        <div className="absolute top-10 right-10 w-60 h-60 bg-purple-500 opacity-15 rounded-full blur-2xl animate-pulse-slow"></div>
       </div>
 
-      {/* Trending Section */}
+      {/* Trending Videos */}
       <section className="py-12 px-4 max-w-7xl mx-auto">
         <SectionHeading
           icon={TrendingUp}
@@ -89,7 +88,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Categories Section */}
+      {/* Categories */}
       <section className="py-12 px-4 max-w-7xl mx-auto">
         <SectionHeading
           icon={Grid3X3}
@@ -103,7 +102,7 @@ const Index = () => {
         />
       </section>
 
-      {/* Latest Section */}
+      {/* Latest Videos */}
       <section className="py-12 px-4 max-w-7xl mx-auto">
         <SectionHeading
           icon={Clock}
@@ -118,7 +117,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* All Videos Section */}
+      {/* All Videos */}
       <section id="all-videos" className="py-12 px-4 max-w-7xl mx-auto">
         <SectionHeading
           icon={Film}
@@ -128,7 +127,7 @@ const Index = () => {
         />
         {filteredVideos.length === 0 ? (
           <p className="text-center text-gray-400 py-10 drop-shadow-neon">
-            لا توجد نتائج مطابقة
+            No matching results
           </p>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
