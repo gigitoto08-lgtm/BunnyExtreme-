@@ -5,16 +5,21 @@ import VideoCard from "@/components/VideoCard";
 import VideoPlayer from "@/components/VideoPlayer";
 import CategoryFilter from "@/components/CategoryFilter";
 import SearchBar from "@/components/SearchBar";
-import HowToSection from "@/components/HowToSection";
 import Footer from "@/components/Footer";
-import { Video, videos, getTrendingVideos, getLatestVideos, searchVideos, getVideosByCategory } from "@/lib/data";
+import {
+  Video,
+  videos,
+  getTrendingVideos,
+  getLatestVideos,
+  getVideosByCategory,
+} from "@/lib/data";
 import { TrendingUp, Clock, Grid3X3, Film } from "lucide-react";
 
-const SectionHeading = ({ icon: Icon, title, accent, id }: { icon: React.ElementType; title: string; accent: string; id: string }) => (
-  <div id={id} className="flex items-center gap-3 mb-8 scroll-mt-20">
-    <Icon className="w-6 h-6 text-primary" />
-    <h2 className="text-2xl md:text-3xl font-display font-black text-foreground">
-      {title} <span className="text-primary neon-text">{accent}</span>
+const SectionHeading = ({ icon: Icon, title, accent, id }: any) => (
+  <div id={id} className="flex items-center gap-3 mb-6 scroll-mt-20">
+    <Icon className="w-5 h-5 text-primary" />
+    <h2 className="text-xl md:text-2xl font-bold text-foreground">
+      {title} <span className="text-primary">{accent}</span>
     </h2>
   </div>
 );
@@ -28,27 +33,48 @@ const Index = () => {
   const latest = useMemo(() => getLatestVideos(8), []);
 
   const filteredVideos = useMemo(() => {
-    let result = selectedCategory === "All" ? videos : getVideosByCategory(selectedCategory);
+    let result =
+      selectedCategory === "All"
+        ? videos
+        : getVideosByCategory(selectedCategory);
+
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
-      result = result.filter((v) =>
-        v.title.toLowerCase().includes(q) ||
-        v.description.toLowerCase().includes(q) ||
-        v.tags.some((t) => t.toLowerCase().includes(q))
+      result = result.filter(
+        (v) =>
+          v.title.toLowerCase().includes(q) ||
+          v.description.toLowerCase().includes(q) ||
+          v.tags.some((t) => t.toLowerCase().includes(q))
       );
     }
+
     return result;
   }, [searchQuery, selectedCategory]);
 
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <HeroSection />
+
+      {/* HERO (تم تبسيطه) */}
+      <div className="text-center py-10 px-4">
+        <h1 className="text-3xl md:text-4xl font-bold mb-3 text-primary">
+          Unlimited Video Library
+        </h1>
+        <p className="text-muted-foreground max-w-xl mx-auto">
+          Explore trending, latest, and categorized videos. Fast streaming,
+          simple browsing, and easy discovery.
+        </p>
+      </div>
 
       {/* Trending */}
-      <section className="py-16 px-4 max-w-7xl mx-auto">
-        <SectionHeading icon={TrendingUp} title="Trending" accent="Now" id="trending" />
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <section className="py-10 px-4 max-w-7xl mx-auto">
+        <SectionHeading
+          icon={TrendingUp}
+          title="Trending"
+          accent="Now"
+          id="trending"
+        />
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {trending.map((v) => (
             <VideoCard key={v.id} video={v} onSelect={setSelectedVideo} />
           ))}
@@ -56,15 +82,28 @@ const Index = () => {
       </section>
 
       {/* Categories */}
-      <section className="py-16 px-4 max-w-7xl mx-auto">
-        <SectionHeading icon={Grid3X3} title="Browse" accent="Categories" id="categories" />
-        <CategoryFilter selected={selectedCategory} onSelect={setSelectedCategory} />
+      <section className="py-10 px-4 max-w-7xl mx-auto">
+        <SectionHeading
+          icon={Grid3X3}
+          title="Browse"
+          accent="Categories"
+          id="categories"
+        />
+        <CategoryFilter
+          selected={selectedCategory}
+          onSelect={setSelectedCategory}
+        />
       </section>
 
       {/* Latest */}
-      <section className="py-16 px-4 max-w-7xl mx-auto">
-        <SectionHeading icon={Clock} title="Latest" accent="Uploads" id="latest" />
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <section className="py-10 px-4 max-w-7xl mx-auto">
+        <SectionHeading
+          icon={Clock}
+          title="Latest"
+          accent="Uploads"
+          id="latest"
+        />
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {latest.map((v) => (
             <VideoCard key={v.id} video={v} onSelect={setSelectedVideo} />
           ))}
@@ -72,15 +111,24 @@ const Index = () => {
       </section>
 
       {/* All Videos */}
-      <section className="py-16 px-4 max-w-7xl mx-auto">
-        <SectionHeading icon={Film} title="All" accent="Videos" id="all-videos" />
-        <div className="mb-8">
+      <section id="all-videos" className="py-10 px-4 max-w-7xl mx-auto">
+        <SectionHeading
+          icon={Film}
+          title="All"
+          accent="Videos"
+          id="all-videos"
+        />
+
+        <div className="mb-6">
           <SearchBar query={searchQuery} onChange={setSearchQuery} />
         </div>
+
         {filteredVideos.length === 0 ? (
-          <p className="text-center text-muted-foreground font-body py-12">No videos found matching your search.</p>
+          <p className="text-center text-muted-foreground py-10">
+            No results found
+          </p>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {filteredVideos.map((v) => (
               <VideoCard key={v.id} video={v} onSelect={setSelectedVideo} />
             ))}
@@ -88,11 +136,14 @@ const Index = () => {
         )}
       </section>
 
-      <HowToSection />
       <Footer />
 
+      {/* Video Player Popup */}
       {selectedVideo && (
-        <VideoPlayer video={selectedVideo} onClose={() => setSelectedVideo(null)} />
+        <VideoPlayer
+          video={selectedVideo}
+          onClose={() => setSelectedVideo(null)}
+        />
       )}
     </div>
   );
