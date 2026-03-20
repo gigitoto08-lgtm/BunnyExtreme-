@@ -1,20 +1,21 @@
+import { Dispatch, SetStateAction } from "react";
 import { Search } from "lucide-react";
 
 interface SearchBarProps {
   query: string;
-  onChange: (query: string) => void;
+  onChange: Dispatch<SetStateAction<string>>;
 }
 
 const SearchBar = ({ query, onChange }: SearchBarProps) => {
   return (
-    <div className="relative max-w-xl w-full">
-      <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+    <div className="relative w-full">
+      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
       <input
         type="text"
-        placeholder="Search videos, categories, tags..."
+        placeholder="Search videos..."
         value={query}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full pl-12 pr-4 py-3 rounded-lg bg-muted border border-border text-foreground placeholder:text-muted-foreground font-body text-base focus:outline-none focus:border-primary/50 focus:shadow-[0_0_15px_hsl(var(--neon-cyan)/0.2)] transition-all duration-300"
+        className="w-full bg-gray-900/70 backdrop-blur-sm border border-gray-700 rounded-full py-2 pl-10 pr-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400 transition-shadow duration-300 drop-shadow-neon"
       />
     </div>
   );
