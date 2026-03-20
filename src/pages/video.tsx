@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import VideoCard from "@/components/VideoCard";
 import { videos, formatViews } from "@/lib/data";
 import { ArrowLeft, Eye } from "lucide-react";
 
@@ -12,17 +13,19 @@ const VideoPage = () => {
 
   const [loading, setLoading] = useState(true);
   const [views, setViews] = useState(video?.views || 0);
+  const [relatedVideos, setRelatedVideos] = useState<typeof videos>([]);
 
-  // Loader fake
+  // Loader عند التحميل
   useEffect(() => {
     setTimeout(() => setLoading(false), 800);
   }, []);
 
-  // Views system
+  // Views حقيقية باستخدام localStorage
   useEffect(() => {
     if (!video) return;
     const key = `views-${video.id}`;
     const stored = localStorage.getItem(key);
+
     if (!stored) {
       const newViews = video.views + 1;
       localStorage.setItem(key, newViews.toString());
@@ -32,8 +35,21 @@ const VideoPage = () => {
     }
   }, [video]);
 
+  // Suggested Videos بناءً على التصنيف
+  useEffect(() => {
+    if (!video) return;
+    const related = videos
+      .filter((v) => v.id !== video.id && v.category === video.category)
+      .slice(0, 8);
+    setRelatedVideos(related);
+  }, [video]);
+
   if (!video) {
-    return <div className="text-center py-20 text-white">Video not found</div>;
+    return (
+      <div className="text-center py-20 text-white">
+        Video not found
+      </div>
+    );
   }
 
   return (
@@ -41,7 +57,8 @@ const VideoPage = () => {
       <Navbar />
 
       <div className="max-w-6xl mx-auto px-4 py-6">
-        {/* Back */}
+
+        {/* زر رجوع */}
         <button
           onClick={() => navigate(-1)}
           className="flex items-center gap-2 mb-6 text-sm text-gray-400 hover:text-primary transition"
@@ -57,26 +74,13 @@ const VideoPage = () => {
               <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
             </div>
           )}
-
-          {/* ⚡ إذا الفيديو محلي أو خارجي */}
-          {video.src ? (
-            <video
-              src={video.src}
-              controls
-              poster={video.thumbnail}
-              className={`w-full h-full rounded-lg ${loading ? "opacity-0" : "opacity-100 transition-opacity duration-500"}`}
-            />
-          ) : video.embedCode ? (
-            <div
-              className={`w-full h-full ${loading ? "opacity-0" : "opacity-100 transition-opacity duration-500"}`}
-              dangerouslySetInnerHTML={{ __html: video.embedCode }}
-            />
-          ) : (
-            <div className="text-center text-gray-400 py-20">No video available</div>
-          )}
+          <div
+            className={`w-full h-full ${loading ? "opacity-0" : "opacity-100 transition-opacity duration-500"}`}
+            dangerouslySetInnerHTML={{ __html: video.embedCode }}
+          />
         </div>
 
-        {/* Info */}
+        {/* معلومات الفيديو */}
         <h1 className="text-2xl md:text-3xl font-bold mb-3 text-primary">
           {video.title}
         </h1>
@@ -94,6 +98,30 @@ const VideoPage = () => {
         <span className="inline-block bg-primary px-3 py-1 text-xs rounded mb-8">
           {video.category}
         </span>
+
+        {/* Suggested Videos */}
+        <h2 className="text-xl font-bold mb-4">Suggested Videos</h2>
+        {relatedVideos.length === 0 ? (
+          <p className="text-gray-400">No related videos found.</p>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {relatedVideos.map((v) => (
+              <a
+                key={v.id}
+                href={`/video/${v.id}`}
+                className="block bg-gray-900 rounded overflow-hidden hover:scale-105 hover:shadow-neon transition transform duration-300"
+              >
+                <img
+                  src={v.thumbnail}
+                  alt={v.title}
+                  className="w-full object-cover h-40"
+                  loading="lazy"
+                />
+                <p className="text-sm p-2 line-clamp-2">{v.title}</p>
+              </a>
+            ))}
+          </div>
+        )}
       </div>
 
       <Footer />
