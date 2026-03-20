@@ -4,9 +4,9 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
-import Index from "./pages/Index.tsx";
-import NotFound from "./pages/NotFound.tsx";
-import VideoPage from "./pages/video"; // ✅ مهم جدًا
+import Index from "./pages/Index";
+import NotFound from "./pages/NotFound";
+import VideoPage from "./pages/video"; // 🔥 مهم جدًا
 
 const queryClient = new QueryClient();
 
@@ -17,12 +17,13 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
+          {/* الصفحة الرئيسية */}
           <Route path="/" element={<Index />} />
 
-          {/* ✅ صفحة الفيديو */}
+          {/* صفحة الفيديو */}
           <Route path="/video/:id" element={<VideoPage />} />
 
-          {/* لا تلمس هذا */}
+          {/* صفحة 404 */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
