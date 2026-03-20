@@ -1,3 +1,4 @@
+// src/pages/video.tsx
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
@@ -7,7 +8,7 @@ import { videos, formatViews } from "@/lib/data";
 import { ArrowLeft, Eye } from "lucide-react";
 
 const VideoPage = () => {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const video = videos.find((v) => v.id === id);
 
@@ -26,7 +27,6 @@ const VideoPage = () => {
     if (!video) return;
     const key = `views-${video.id}`;
     const stored = localStorage.getItem(key);
-
     if (!stored) {
       const newViews = video.views + 1;
       localStorage.setItem(key, newViews.toString());
@@ -39,12 +39,10 @@ const VideoPage = () => {
   // 🔥 Related Videos based on tags
   useEffect(() => {
     if (!video) return;
-
     const related = videos
       .filter((v) => v.id !== video.id)
       .filter((v) => v.tags.some((tag) => video.tags.includes(tag)))
       .slice(0, 8);
-
     setTimeout(() => {
       setRelatedVideos(related);
       setRelatedLoading(false);
@@ -60,7 +58,6 @@ const VideoPage = () => {
       <Navbar />
 
       <div className="max-w-6xl mx-auto px-4 py-6">
-
         {/* 🔙 Back Button */}
         <button
           onClick={() => navigate(-1)}
@@ -83,11 +80,8 @@ const VideoPage = () => {
           />
         </div>
 
-        {/* 🧠 Info */}
-        <h1 className="text-2xl md:text-3xl font-bold mb-3 text-primary">
-          {video.title}
-        </h1>
-
+        {/* 🧠 Video Info */}
+        <h1 className="text-2xl md:text-3xl font-bold mb-3 text-primary">{video.title}</h1>
         <div className="flex items-center gap-4 text-sm text-gray-400 mb-4">
           <span className="flex items-center gap-1">
             <Eye className="w-4 h-4" />
@@ -95,16 +89,11 @@ const VideoPage = () => {
           </span>
           <span>{video.uploadDate}</span>
         </div>
-
         <p className="text-gray-300 mb-6 leading-relaxed">{video.description}</p>
+        <span className="inline-block bg-primary px-3 py-1 text-xs rounded mb-8">{video.category}</span>
 
-        <span className="inline-block bg-primary px-3 py-1 text-xs rounded mb-8">
-          {video.category}
-        </span>
-
-        {/* 🔥 Related Videos */}
+        {/* 🔥 Related Videos Section */}
         <h2 className="text-xl font-bold mb-4">Suggested Videos</h2>
-
         {relatedLoading ? (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {Array.from({ length: 8 }).map((_, i) => (
@@ -121,12 +110,7 @@ const VideoPage = () => {
                 href={`/video/${v.id}`}
                 className="block bg-gray-900 rounded overflow-hidden hover:scale-105 hover:shadow-neon transition transform duration-300"
               >
-                <img
-                  src={v.thumbnail}
-                  alt={v.title}
-                  className="w-full object-cover h-40"
-                  loading="lazy"
-                />
+                <img src={v.thumbnail} alt={v.title} className="w-full object-cover h-40" loading="lazy" />
                 <p className="text-sm p-2 line-clamp-2">{v.title}</p>
               </a>
             ))}
