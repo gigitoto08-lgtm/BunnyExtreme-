@@ -3,17 +3,17 @@ import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import VideoCard from "@/components/VideoCard";
-import { videos, formatViews } from "@/lib/data";
+import { Video, videos, formatViews } from "@/lib/data";
 import { ArrowLeft, Eye } from "lucide-react";
 
 const VideoPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const video = videos.find((v) => v.id === id);
+  const video: Video | undefined = videos.find((v) => v.id === id);
 
   const [loading, setLoading] = useState(true);
   const [views, setViews] = useState(video?.views || 0);
-  const [relatedVideos, setRelatedVideos] = useState<typeof videos>([]);
+  const [relatedVideos, setRelatedVideos] = useState<Video[]>([]);
 
   useEffect(() => setTimeout(() => setLoading(false), 800), []);
 
@@ -47,7 +47,6 @@ const VideoPage = () => {
     <div className="min-h-screen bg-black text-white">
       <Navbar />
       <div className="max-w-6xl mx-auto px-4 py-6">
-
         <button
           onClick={() => navigate(-1)}
           className="flex items-center gap-2 mb-6 text-sm text-gray-400 hover:text-primary transition"
