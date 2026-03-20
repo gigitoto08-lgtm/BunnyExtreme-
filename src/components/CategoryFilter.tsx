@@ -1,32 +1,34 @@
-import { categories } from "@/lib/data";
+import { Dispatch, SetStateAction } from "react";
 
 interface CategoryFilterProps {
   selected: string;
-  onSelect: (category: string) => void;
+  onSelect: Dispatch<SetStateAction<string>>;
 }
+
+const categories = [
+  "All",
+  "POV",
+  "Anal",
+  "Threesome",
+  "Hardcore",
+  "Deepthroat",
+  "Facefuck",
+  "Group Sex",
+  "BBC",
+  "Leaked",
+];
 
 const CategoryFilter = ({ selected, onSelect }: CategoryFilterProps) => {
   return (
-    <div className="flex flex-wrap gap-2">
-      <button
-        onClick={() => onSelect("All")}
-        className={`px-4 py-2 rounded-lg font-display text-xs tracking-wider uppercase transition-all duration-300 ${
-          selected === "All"
-            ? "bg-primary text-primary-foreground shadow-[0_0_15px_hsl(var(--neon-cyan)/0.4)]"
-            : "border border-border text-muted-foreground hover:border-primary/50 hover:text-primary"
-        }`}
-      >
-        All
-      </button>
-
+    <div className="flex flex-wrap gap-3 justify-center">
       {categories.map((cat) => (
         <button
           key={cat}
           onClick={() => onSelect(cat)}
-          className={`px-4 py-2 rounded-lg font-display text-xs tracking-wider uppercase transition-all duration-300 ${
+          className={`px-4 py-1 rounded-full text-sm font-medium transition-colors duration-300 ${
             selected === cat
-              ? "bg-primary text-primary-foreground shadow-[0_0_15px_hsl(var(--neon-cyan)/0.4)]"
-              : "border border-border text-muted-foreground hover:border-primary/50 hover:text-primary"
+              ? "bg-pink-500 text-white shadow-neon"
+              : "bg-gray-800 text-gray-400 hover:bg-pink-500 hover:text-white"
           }`}
         >
           {cat}
