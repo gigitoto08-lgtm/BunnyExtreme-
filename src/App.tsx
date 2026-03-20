@@ -4,26 +4,37 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
+// صفحات المشروع
 import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
 import VideoPage from "./pages/video";
+import NotFound from "./pages/NotFound";
 
+// إنشاء Client لـ React Query
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/video/:id" element={<VideoPage />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+const App = () => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        {/* Notifier components */}
+        <Toaster />
+        <Sonner />
+
+        <BrowserRouter>
+          <Routes>
+            {/* الصفحة الرئيسية */}
+            <Route path="/" element={<Index />} />
+
+            {/* صفحة الفيديو */}
+            <Route path="/video/:id" element={<VideoPage />} />
+
+            {/* صفحة 404 */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;
