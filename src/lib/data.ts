@@ -30,7 +30,8 @@ export const categories = [
   "Small Tits",
   "Fetish",
   "BDSM",
-  "Toys"
+  "Toys",
+  "DirtyAuditions" // أضفت تصنيف الفيديو الجديد
 ];
 
 export const videos: Video[] = [
@@ -56,7 +57,28 @@ export const videos: Video[] = [
     views: 980,
     uploadDate: "2026-03-14"
   },
-  // أضف باقي الفيديوهات بنفس الصيغة لاحقًا
+  // 🔥 الفيديو الجديد
+  {
+    id: "v3",
+    title: "DirtyAuditions – Lucky & Daisy Are Up Next",
+    description: "Mike Adriano NEW DirtyAuditions 2026 – Lucky & Daisy Are Up Next. Lucky Kay & Daisy Pheonix: A Couple of New Cum-Thirsty Cuties Who Can’t Get Enough Dick. Get ready for a steamy, unforgettable experience with Lucky Kay and Daisy Pheonix.",
+    tags: [
+      "Daisy Pheonix",
+      "Lucky Kay",
+      "Mike Adriano",
+      "DirtyAuditions",
+      "POV",
+      "Anal",
+      "Threesome",
+      "Deepthroat",
+      "Blowjob"
+    ],
+    category: "DirtyAuditions",
+    thumbnail: "https://via.placeholder.com/600x340.png?text=DirtyAuditions+Thumbnail",
+    embedCode: '<iframe width="100%" height="100%" src="https://veev.to/e/t290i50d8qs7" scrolling="no" frameborder="0" allowfullscreen></iframe>',
+    views: 0,
+    uploadDate: "2026-03-20"
+  }
 ];
 
 export const getTrendingVideos = (count = 8) =>
