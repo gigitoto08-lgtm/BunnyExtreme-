@@ -2,22 +2,20 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import VideoCard from "@/components/VideoCard";
-import { Video, videos, formatViews } from "@/lib/data";
+import { videos, formatViews } from "@/lib/data";
 import { ArrowLeft, Eye } from "lucide-react";
 
 const VideoPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const video: Video | undefined = videos.find((v) => v.id === id);
+  const video = videos.find((v) => v.id === id);
 
   const [loading, setLoading] = useState(true);
   const [views, setViews] = useState(video?.views || 0);
-  const [relatedVideos, setRelatedVideos] = useState<Video[]>([]);
+  const [relatedVideos, setRelatedVideos] = useState<typeof videos>([]);
 
   useEffect(() => setTimeout(() => setLoading(false), 800), []);
 
-  // Views system
   useEffect(() => {
     if (!video) return;
     const key = `views-${video.id}`;
@@ -31,7 +29,6 @@ const VideoPage = () => {
     }
   }, [video]);
 
-  // Suggested Videos based on tags
   useEffect(() => {
     if (!video) return;
     const related = videos
@@ -47,6 +44,7 @@ const VideoPage = () => {
     <div className="min-h-screen bg-black text-white">
       <Navbar />
       <div className="max-w-6xl mx-auto px-4 py-6">
+
         <button
           onClick={() => navigate(-1)}
           className="flex items-center gap-2 mb-6 text-sm text-gray-400 hover:text-primary transition"
@@ -72,7 +70,6 @@ const VideoPage = () => {
           <span>{video.uploadDate}</span>
         </div>
         <p className="text-gray-300 mb-6 leading-relaxed">{video.description}</p>
-        <span className="inline-block bg-primary px-3 py-1 text-xs rounded mb-8">{video.category}</span>
 
         <h2 className="text-xl font-bold mb-4">Suggested Videos</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
