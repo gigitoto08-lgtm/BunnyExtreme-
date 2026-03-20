@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import VideoCard from "@/components/VideoCard";
 import CategoryFilter from "@/components/CategoryFilter";
@@ -25,6 +25,9 @@ const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
 
+  // 🔥 Infinite Scroll state
+  const [visibleCount, setVisibleCount] = useState(8);
+
   const trending = useMemo(() => getTrendingVideos(8), []);
   const latest = useMemo(() => getLatestVideos(8), []);
 
@@ -47,33 +50,50 @@ const Index = () => {
     return result;
   }, [searchQuery, selectedCategory]);
 
+  // 🔥 Visible videos
+  const visibleVideos = filteredVideos.slice(0, visibleCount);
+  const hasMore = visibleCount < filteredVideos.length;
+
+  // 🔥 Scroll listener
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        window.innerHeight + window.scrollY >=
+        document.body.offsetHeight - 300
+      ) {
+        setVisibleCount((prev) => prev + 8);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-black">
       <Navbar />
 
-      {/* HERO Section Neon 3D */}
+      {/* HERO */}
       <div className="text-center py-16 px-4 bg-gradient-to-r from-cyan-800 via-purple-900 to-pink-800 relative overflow-hidden rounded-b-3xl">
-        {/* Site Title */}
         <h1 className="text-5xl md:text-6xl font-extrabold text-white drop-shadow-neon mb-4 animate-neon-glow">
           BunnyExtreme
         </h1>
 
-        {/* Site Description */}
         <p className="text-gray-300 max-w-2xl mx-auto drop-shadow-neon mb-6 text-lg md:text-xl">
-          BunnyExtreme – Watch thousands of exclusive long adult videos in 1080p for free. Browse your favorite categories: POV, Anal, Threesome, Swallow, Extreme Deepthroat, Facefuck, Group Sex, BBC, Dredd Onlyfans, Leaked.
+          Watch unlimited high-quality videos online. Explore categories like POV,
+          Anal, Threesome, Hardcore, Deepthroat, and more. Daily updates, fast
+          streaming, and smooth experience.
         </p>
 
-        {/* Search Bar */}
         <div className="max-w-xl mx-auto">
           <SearchBar query={searchQuery} onChange={setSearchQuery} />
         </div>
 
-        {/* Neon background blobs */}
         <div className="absolute -top-20 -left-32 w-72 h-72 bg-pink-500 opacity-20 rounded-full blur-3xl animate-pulse-slow"></div>
         <div className="absolute -bottom-32 -right-24 w-96 h-96 bg-cyan-500 opacity-20 rounded-full blur-3xl animate-pulse-slow"></div>
       </div>
 
-      {/* Trending Videos */}
+      {/* Trending */}
       <section className="py-12 px-4 max-w-7xl mx-auto">
         <SectionHeading
           icon={TrendingUp}
@@ -102,7 +122,7 @@ const Index = () => {
         />
       </section>
 
-      {/* Latest Videos */}
+      {/* Latest */}
       <section className="py-12 px-4 max-w-7xl mx-auto">
         <SectionHeading
           icon={Clock}
@@ -117,7 +137,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* All Videos */}
+      {/* All Videos + Infinite Scroll */}
       <section id="all-videos" className="py-12 px-4 max-w-7xl mx-auto">
         <SectionHeading
           icon={Film}
@@ -125,16 +145,25 @@ const Index = () => {
           accent="Videos"
           id="all-videos"
         />
+
         {filteredVideos.length === 0 ? (
-          <p className="text-center text-gray-400 py-10 drop-shadow-neon">
-            No matching results
+          <p className="text-center text-gray-400 py-10">
+            No results found
           </p>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {filteredVideos.map((v) => (
-              <VideoCard key={v.id} video={v} />
-            ))}
-          </div>
+          <>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              {visibleVideos.map((v) => (
+                <VideoCard key={v.id} video={v} />
+              ))}
+            </div>
+
+            {hasMore && (
+              <div className="flex justify-center mt-8">
+                <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+              </div>
+            )}
+          </>
         )}
       </section>
 
