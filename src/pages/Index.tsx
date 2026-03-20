@@ -25,7 +25,7 @@ const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
 
-  // 🔥 Infinite Scroll state
+  // Infinite Scroll state
   const [visibleCount, setVisibleCount] = useState(8);
 
   const trending = useMemo(() => getTrendingVideos(8), []);
@@ -50,11 +50,11 @@ const Index = () => {
     return result;
   }, [searchQuery, selectedCategory]);
 
-  // 🔥 Visible videos
+  // Visible videos
   const visibleVideos = filteredVideos.slice(0, visibleCount);
   const hasMore = visibleCount < filteredVideos.length;
 
-  // 🔥 Scroll listener
+  // Scroll listener
   useEffect(() => {
     const handleScroll = () => {
       if (
@@ -64,7 +64,6 @@ const Index = () => {
         setVisibleCount((prev) => prev + 8);
       }
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -73,12 +72,11 @@ const Index = () => {
     <div className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-black">
       <Navbar />
 
-      {/* HERO */}
+      {/* HERO Section Neon */}
       <div className="text-center py-16 px-4 bg-gradient-to-r from-cyan-800 via-purple-900 to-pink-800 relative overflow-hidden rounded-b-3xl">
         <h1 className="text-5xl md:text-6xl font-extrabold text-white drop-shadow-neon mb-4 animate-neon-glow">
           BunnyExtreme
         </h1>
-
         <p className="text-gray-300 max-w-2xl mx-auto drop-shadow-neon mb-6 text-lg md:text-xl">
           Watch unlimited high-quality videos online. Explore categories like POV,
           Anal, Threesome, Hardcore, Deepthroat, and more. Daily updates, fast
@@ -89,6 +87,7 @@ const Index = () => {
           <SearchBar query={searchQuery} onChange={setSearchQuery} />
         </div>
 
+        {/* Neon background blobs */}
         <div className="absolute -top-20 -left-32 w-72 h-72 bg-pink-500 opacity-20 rounded-full blur-3xl animate-pulse-slow"></div>
         <div className="absolute -bottom-32 -right-24 w-96 h-96 bg-cyan-500 opacity-20 rounded-full blur-3xl animate-pulse-slow"></div>
       </div>
