@@ -1,59 +1,49 @@
-import { Play, Eye } from "lucide-react";
-import { Video, formatViews } from "@/lib/data";
+import { useState } from "react";
 
 interface VideoCardProps {
-  video: Video;
+  video: {
+    id: string;
+    title: string;
+    thumbnail: string;
+    category: string;
+    embedCode?: string;
+  };
 }
 
 const VideoCard = ({ video }: VideoCardProps) => {
+  const [hover, setHover] = useState(false);
+
   return (
     <a
       href={`/video/${video.id}`}
-      className="group block rounded-lg overflow-hidden bg-gray-900 border border-gray-700 w-full transition-all hover:border-cyan-400 hover:scale-[1.03] drop-shadow-neon"
+      className={`block bg-gray-900 rounded-lg overflow-hidden relative transform transition-all duration-300 ${
+        hover ? "scale-105 shadow-neon" : ""
+      }`}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
     >
-      <div className="relative aspect-video overflow-hidden">
-        <img
-          src={video.thumbnail}
-          alt={video.title}
-          onError={(e) =>
-            (e.currentTarget.src =
-              "https://via.placeholder.com/600x340.png?text=Video")
-          }
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-          loading="lazy"
-        />
+      {/* Thumbnail */}
+      <img
+        src={video.thumbnail}
+        alt={video.title}
+        className="w-full h-40 object-cover"
+        loading="lazy"
+      />
 
-        {/* زر التشغيل Neon */}
-        <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-          <div className="w-14 h-14 rounded-full bg-cyan-500 flex items-center justify-center shadow-neon animate-pulse-slow">
-            <Play className="w-6 h-6 text-white ml-1" />
-          </div>
-        </div>
+      {/* Overlay for hover */}
+      <div
+        className={`absolute inset-0 bg-gradient-to-t from-black/60 to-transparent transition-opacity duration-300 ${
+          hover ? "opacity-100" : "opacity-0"
+        }`}
+      />
 
-        {/* التصنيف Neon */}
-        <span className="absolute top-2 right-2 px-2 py-1 text-[10px] rounded bg-pink-500 text-white uppercase drop-shadow-neon animate-pulse-slow">
-          {video.category}
-        </span>
-      </div>
+      {/* Title */}
+      <p className="text-sm p-2 line-clamp-2 text-white font-medium">{video.title}</p>
 
-      {/* المعلومات */}
-      <div className="p-3">
-        <h3 className="text-sm font-bold text-white line-clamp-2 mb-1 group-hover:text-cyan-400 drop-shadow-neon transition-colors">
-          {video.title}
-        </h3>
-
-        <p className="text-xs text-gray-400 line-clamp-2 mb-2 group-hover:text-white transition-colors">
-          {video.description}
-        </p>
-
-        <div className="flex items-center justify-between text-xs text-gray-400">
-          <span className="flex items-center gap-1">
-            <Eye className="w-3 h-3 text-gray-300" />
-            {formatViews(video.views)}
-          </span>
-          <span>{video.uploadDate}</span>
-        </div>
-      </div>
+      {/* Category badge */}
+      <span className="absolute top-2 left-2 bg-primary text-black text-xs px-2 py-0.5 rounded">
+        {video.category}
+      </span>
     </a>
   );
 };
