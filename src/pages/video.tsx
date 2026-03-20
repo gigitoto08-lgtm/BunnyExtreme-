@@ -13,10 +13,12 @@ const VideoPage = () => {
   const [loading, setLoading] = useState(true);
   const [views, setViews] = useState(video?.views || 0);
 
+  // Loader fake
   useEffect(() => {
     setTimeout(() => setLoading(false), 800);
   }, []);
 
+  // Views system
   useEffect(() => {
     if (!video) return;
     const key = `views-${video.id}`;
@@ -39,6 +41,7 @@ const VideoPage = () => {
       <Navbar />
 
       <div className="max-w-6xl mx-auto px-4 py-6">
+        {/* Back */}
         <button
           onClick={() => navigate(-1)}
           className="flex items-center gap-2 mb-6 text-sm text-gray-400 hover:text-primary transition"
@@ -47,6 +50,7 @@ const VideoPage = () => {
           Back
         </button>
 
+        {/* Video Player */}
         <div className="relative w-full aspect-video bg-black rounded-lg overflow-hidden mb-6 shadow-lg">
           {loading && (
             <div className="absolute inset-0 flex items-center justify-center bg-black z-10">
@@ -54,14 +58,25 @@ const VideoPage = () => {
             </div>
           )}
 
-          <video
-            src={video.src}
-            controls
-            className={`w-full h-full rounded-lg ${loading ? "opacity-0" : "opacity-100 transition-opacity duration-500"}`}
-            poster={video.thumbnail}
-          />
+          {/* ⚡ إذا الفيديو محلي أو خارجي */}
+          {video.src ? (
+            <video
+              src={video.src}
+              controls
+              poster={video.thumbnail}
+              className={`w-full h-full rounded-lg ${loading ? "opacity-0" : "opacity-100 transition-opacity duration-500"}`}
+            />
+          ) : video.embedCode ? (
+            <div
+              className={`w-full h-full ${loading ? "opacity-0" : "opacity-100 transition-opacity duration-500"}`}
+              dangerouslySetInnerHTML={{ __html: video.embedCode }}
+            />
+          ) : (
+            <div className="text-center text-gray-400 py-20">No video available</div>
+          )}
         </div>
 
+        {/* Info */}
         <h1 className="text-2xl md:text-3xl font-bold mb-3 text-primary">
           {video.title}
         </h1>
@@ -75,11 +90,12 @@ const VideoPage = () => {
         </div>
 
         <p className="text-gray-300 mb-6 leading-relaxed">{video.description}</p>
+
         <span className="inline-block bg-primary px-3 py-1 text-xs rounded mb-8">
           {video.category}
         </span>
-
       </div>
+
       <Footer />
     </div>
   );
